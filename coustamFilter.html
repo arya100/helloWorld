@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <title>welcome to Angular</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script type="text/javascript">
+    var mymodule = angular.module("myFilter", []);
+    mymodule.controller("myCtrl", function($scope) {
+        $scope.name = 'arya';
+
+    });
+    mymodule.filter("hello", function() {
+        var custamFiltr = function(name) {
+            return "hi" + name;
+
+        }
+        return custamFiltr;
+
+    });
+    </script>
+</head>
+
+<body ng-app="myFilter" ng-controller="myCtrl">
+    <h3>{{name|hello}}</h3>
+</body>
+
+</html>

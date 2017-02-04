@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script type="text/javascript">
+    var myapp = angular.module("eventHnrl", []);
+    myapp.controller("eventCtrl", function($scope) {
+        $scope.massage = "arya";
+        $scope.count = 0;
+
+        $scope.onthemassage = function() {
+            $scope.massage = "over the massage";
+
+        }
+        $scope.notonthemassage = function() {
+            $scope.massage = "not on the massage";
+
+        }
+        $scope.myFunction = function() {
+            $scope.count++;
+        }
+        $scope.mouseFunction = function(myE) {
+            $scope.x = myE.clientX;
+            $scope.y = myE.clientY;
+        }
+
+    });
+    </script>
+</head>
+
+<body ng-app="eventHnrl" ng-controller="eventCtrl">
+    <div ng-mouseover="onthemassage()" ng-mouseout="notonthemassage()">{{massage}}</div>
+    <div ng-mousemove="mouseFunction($event)"> mouse over me</div>
+    <p>Coordinates: {{x + ', ' + y}}</p>
+    <button ng-click="myFunction()">click</button>
+    <p>{{count}}</p>
+</body>
+
+</html>

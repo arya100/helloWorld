@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>differPromise</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script type="text/javascript">
+    var differapp = angular.module("defferPromise", []);
+    //create to service eith time out,$q(for difeer obj)service when ever we keep track the status of the operation,when we are interacting with back end we use http obj
+    differapp.service("discountService", function($timeout, $q, $http) {
+        //creating a function
+        this.getDiscount = function(price) {
+            //creating differ obj
+            var defer = $q.defer();
+            $timeout(function() {
+                    if (price > 100) {
+                        defer.resolve(10);
+                    } else {
+                        defer.reject(0);
+                    }
+
+                }, 4000) //timer
+            return defer.promise;
+        }
+    });
+    //connection b/w front and back end
+    differapp.controller("DeferContrl", function($scope, discountService) {
+        $scope.discount = "fectching from service";
+        //promise obj is going to have info about the task its going to handle by using then & catch method
+        //creating promise obj annd assining to service
+        var promiseObj = discountService.getDiscount(90);
+        console.log("Returned promise object:" + JSON.stringify(promiseObj));
+        //ceating  then and catch
+        promiseObj.then(function(data) {
+            $scope.discount = data;
+            console.log("sucessful promise object:" + JSON.stringify(promiseObj));
+        });
+        promiseObj.catch(function(data) {
+            $scope.discount = data;
+            console.log("error promise object:" + JSON.stringify(promiseObj));
+        });
+
+    });
+    </script>
+</head>
+
+<body ng-app='defferPromise' ng-controller="DeferContrl">
+    Discount is {{discount}}
+</body>
+
+</html>

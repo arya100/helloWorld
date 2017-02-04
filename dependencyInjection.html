@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dependency Injection</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script type="text/javascript">
+    'use strict'
+    var mymodule = angular.module("DependencyModule", []);
+    //injecting value in to our method
+    //json array of Obj
+    var mobileList = [{
+        "name": "Iphone",
+        'model': "6"
+    }, {
+        "name": "Iphone",
+        'model': "6"
+    }];
+    //inject json array in to our module using .value method
+    ///creat a value dependency with the staic data
+    mymodule.value("mobileList", mobileList); //(nameof the value ,value which has to be injected in to this module)
+    //create a factory which used to create a new Obj
+    //for that we have to create the class
+    function Employee(name, id) {
+        this.name = name;
+        this.id = id;
+        //function
+        this.getEmployeeDetails = function() {
+            return this.name + "" + this.id;
+        }
+
+    };
+
+    function Account(accountNo, blance) {
+        this.accountNo = accountNo;
+        this.blance = blance;
+        //function
+        this.getAccountDetails = function() {
+            return this.accountNo + "" + this.blance;
+        }
+
+
+    };
+    //creating a factory and injecting on to the module
+
+    mymodule.factory("empFactory", function() {
+        //creating Obj called employee factory
+        var employeeFactory = {};
+        employeeFactory.getEmployee = function(name, id) {
+            var empObj = new Employee(name, id);
+            return empObj;
+
+        };
+        employeeFactory.getAccount = function(accountNo, blance) {
+            var accObj = new Account(accountNo, blance);
+            return accObj;
+        };
+        return employeeFactory;
+    });
+    mymodule.service("empservice", function() {
+        this.getEmployeeList = function() {
+            return "returning  sample emp details from details";
+
+        }
+    });
+    mymodule.controller("empCtrl", function($scope, empFactory, mobileList, empservice) { //empfactory is name of the factory
+        //create an employee obj//
+        console.log("empservice:" + empservice.getEmployeeList());
+        console.log("mobileList:" + JSON.stringify(mobileList));
+        var empObj = empFactory.getEmployee("arya", "ssn");
+        var accObj = empFactory.getAccount("1122334", "3244543");
+        //controller grab the data dynamically and display the info it we get through scope data
+        $scope.name = empObj.name;
+        $scope.id = empObj.id;
+        $scope.accountNo = accObj.accountNo;
+        $scope.blance = accObj.blance;
+    });
+    </script>
+</head>
+
+<body ng-app="DependencyModule" ng-controller='empCtrl'>
+    <div>name of the employee:{{name}}
+        <br> Id of the employee:{{id}}</div>
+    <div>account number:{{accountNo}}
+        <br>blance amount:{{blance}}</div>
+</body>
+
+</html>
